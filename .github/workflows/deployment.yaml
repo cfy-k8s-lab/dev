@@ -13,15 +13,22 @@ jobs:
         client-id: ${{ vars.APP_CLIENT_ID }}
         private-key: ${{ secrets.APP_PRIVATE_KEY }}
         owner: cfy-k8s-lab
-  
-    - name: Deploy version
-      uses: Cloud-for-You/gh_action_deploy-apps@main
+
+    - name: Checkout OPS repository
+      uses: actions/checkout@v7
       with:
-        repository: "cfy-k8s-lab/ops"
-        branch: "main"
-        token: ${{ steps.app-token.outputs.token }}
-        deployment_file: "config/app.json"
-        jsonpath: "$.spec.tag"
-        value: "5"
-        push: true
-        pull_request: false
+        name: cfy-k8s-lab/ops
+        ref: env/dev
+        token: ${{ steps.app-token-outputs.token }}
+  
+    #- name: Deploy version
+    #  uses: Cloud-for-You/gh_action_deploy-apps@main
+    #  with:
+    #    repository: "cfy-k8s-lab/ops"
+    #    branch: "main"
+    #    token: ${{ steps.app-token.outputs.token }}
+    #    deployment_file: "config/app.json"
+    #    jsonpath: "$.spec.tag"
+    #    value: "5"
+    #    push: true
+    #    pull_request: false
