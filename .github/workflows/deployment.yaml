@@ -18,9 +18,9 @@ jobs:
       - name: Checkout OPS repository
         uses: actions/checkout@v7
         with:
-          name: cfy-k8s-lab/ops
+          repository: cfy-k8s-lab/ops
           ref: env/dev
-          token: ${{ steps.app-token-outputs.token }}
+          token: ${{ steps.app-token.outputs.token }}
   
     #- name: Deploy version
     #  uses: Cloud-for-You/gh_action_deploy-apps@main
