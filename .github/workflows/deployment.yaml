@@ -14,18 +14,6 @@ jobs:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: cfy-k8s-lab
-
-      - name: Checkout OPS repository
-        uses: actions/checkout@v7
-        with:
-          repository: cfy-k8s-lab/ops
-          ref: env/dev
-          token: ${{ steps.app-token.outputs.token }}
-          path: ops-repo
-
-      - name: DEBUG
-        run: |
-          ls -la ops-repo
   
       - name: Deploy version
         uses: Cloud-for-You/gh_action_deploy-apps@main
