@@ -6,6 +6,13 @@ on:
 jobs:
   runs-on: ubuntu-latest
   steps:
+    - name: Create token
+      uses: actions/create-github-app-token@v3
+      with:
+        client-id: ${{ vars.APP_CLIENT_ID }}
+        private-key: ${{ secrets.APP_PRIVATE_KEY }}
+        owner: cfy-k8s-lab
+  
     - name: Deploy version
       uses: Cloud-for-You/gh_action_deploy-apps@main
       with:
