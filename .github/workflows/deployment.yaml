@@ -16,7 +16,7 @@ jobs:
           owner: cfy-k8s-lab
   
       - name: Deploy version
-        uses: Cloud-for-You/gh_action_deploy-apps@8c9b395c424cd3e8fdfe8e44d108c1f242d2a4f2
+        uses: Cloud-for-You/gh_action_deploy-apps@main
         with:
           repository: cfy-k8s-lab/ops
           ref: env/dev
