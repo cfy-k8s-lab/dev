@@ -1,0 +1,19 @@
+on:
+  workflow_dispatch:
+    branch:
+      - "main"
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Deploy version
+      uses: Cloud-for-You/gh_action_deploy-apps@main
+      with:
+        repository: "cfy-k8s-lab/ops"
+        branch: "main"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        deployment_file: "config/app.json"
+        jsonpath: "$.replicas"
+        value: "5"
+        push: true
+        pull_request: false
