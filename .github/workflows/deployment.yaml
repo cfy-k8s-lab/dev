@@ -7,6 +7,7 @@ jobs:
   runs-on: ubuntu-latest
   steps:
     - name: Create token
+      id: app-token
       uses: actions/create-github-app-token@v3
       with:
         client-id: ${{ vars.APP_CLIENT_ID }}
@@ -18,7 +19,7 @@ jobs:
       with:
         repository: "cfy-k8s-lab/ops"
         branch: "main"
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ steps.app-token.outputs.token }}
         deployment_file: "config/app.json"
         jsonpath: "$.spec.tag"
         value: "5"
