@@ -13,7 +13,7 @@ jobs:
         branch: "main"
         token: ${{ secrets.GITHUB_TOKEN }}
         deployment_file: "config/app.json"
-        jsonpath: "$.replicas"
+        jsonpath: "$.spec.tag"
         value: "5"
         push: true
         pull_request: false
