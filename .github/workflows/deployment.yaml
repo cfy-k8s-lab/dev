@@ -6,7 +6,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    steps:
+    steps:  
       - name: Create token
         id: app-token
         uses: actions/create-github-app-token@v3
@@ -24,6 +24,6 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           deployment_file: foo.yaml
           jsonpath: "$.spec.tag"
-          value: "v5"
+          value: ${{ github.run_id }}
           push: true
           pull_request: false
