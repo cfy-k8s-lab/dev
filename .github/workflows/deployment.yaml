@@ -4,8 +4,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-to-dev:
+  get-token:
     runs-on: ubuntu-latest
+    outputs:
+      token: ${{ steps.app-token.outputs.token }}
     steps:  
       - name: Create token
         id: app-token
@@ -14,14 +16,19 @@ jobs:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: cfy-k8s-lab
-  
+
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    needs:
+      - get-token
+    steps:
       - name: Deploy version to DEV
         uses: Cloud-for-You/gh_action_deploy-apps@main
         with:
           repository: cfy-k8s-lab/ops
           ref: env/dev
           path: ops-repo-dev
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ needs.get-token.outputs.token }}
           deployment_file: foo.yaml
           jsonpath: "$.spec.tag"
           value: ${{ github.run_id }}
@@ -31,6 +38,7 @@ jobs:
   tag-release-version:
     runs-on: ubuntu-latest
     needs:
+      - get-token
       - deploy-to-dev
     steps:
       - name: Create semvers TAG
@@ -47,7 +55,7 @@ jobs:
           repository: cfy-k8s-lab/ops
           ref: env/test
           path: ops-repo-test
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ needs.get-token.outputs.token }}
           deployment_file: foo.yaml
           jsonpath: "$.spec.tag"
           value: ${{ steps.release-tag.outputs.version }}
