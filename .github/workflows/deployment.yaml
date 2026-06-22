@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  release:
+  deploy-to-dev:
     runs-on: ubuntu-latest
     steps:  
       - name: Create token
@@ -28,6 +28,19 @@ jobs:
           push: true
           pull_request: false
 
+  tag-release-version:
+    runs-on: ubuntu-latest
+    needs:
+      - deploy-to-dev
+    steps:
+      - name: Create semvers TAG
+        id: release-tag
+        run: |
+          VERSION="$(printf "%d.%d.%d" $((RANDOM%5+1)) $((RANDOM%10)) $((RANDOM%10)))"
+          PATCHED="$(echo "$VERSION" | awk -F. '{printf "%d.%d.%d",$1,$2,$3+1}')"
+          FINAL_VERSION="${PATCHED}-build-${GITHUB_RUN_NUMBER:-local}"
+          echo "version=$FINAL_VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Create/Update PR to TEST
         uses: Cloud-for-You/gh_action_deploy-apps@main
         with:
@@ -37,6 +50,6 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           deployment_file: foo.yaml
           jsonpath: "$.spec.tag"
-          value: ${{ github.run_id }}
+          value: ${{ steps.release-tag.outputs.version }}
           push: false
           pull_request: true
