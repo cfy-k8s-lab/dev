@@ -15,15 +15,28 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: cfy-k8s-lab
   
-      - name: Deploy version
+      - name: Deploy version to DEV
         uses: Cloud-for-You/gh_action_deploy-apps@main
         with:
           repository: cfy-k8s-lab/ops
           ref: env/dev
-          path: ops-repo
+          path: ops-repo-dev
           token: ${{ steps.app-token.outputs.token }}
           deployment_file: foo.yaml
           jsonpath: "$.spec.tag"
           value: ${{ github.run_id }}
           push: true
           pull_request: false
+
+      - name: Create/Update PR to TEST
+        uses: Cloud-for-You/gh_action_deploy-apps@main
+        with:
+          repository: cfy-k8s-lab/ops
+          ref: env/test
+          path: ops-repo-test
+          token: ${{ steps.app-token.outputs.token }}
+          deployment_file: foo.yaml
+          jsonpath: "$.spec.tag"
+          value: ${{ github.run_id }}
+          push: false
+          pull_request: true
