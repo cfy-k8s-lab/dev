@@ -15,7 +15,7 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: cfy-k8s-lab
       - name: Deploy version to DEV
-        uses: Cloud-for-You/gh_action_deploy-apps@feat/implement-pr
+        uses: Cloud-for-You/gh_action_deploy-apps@main
         with:
           repository: cfy-k8s-lab/ops
           ref: env/dev
@@ -55,7 +55,7 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: cfy-k8s-lab
       - name: Create/Update PR to TEST
-        uses: Cloud-for-You/gh_action_deploy-apps@feat/implement-pr
+        uses: Cloud-for-You/gh_action_deploy-apps@main
         with:
           repository: cfy-k8s-lab/ops
           ref: env/test
