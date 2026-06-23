@@ -26,7 +26,7 @@ jobs:
           value: ${{ github.run_id }}
           push: true
           pull_request: false
-          message: Nasazeni aplikace do DEV
+          #message: Nasazeni aplikace do DEV
 
   release-version:
     runs-on: ubuntu-latest
@@ -67,4 +67,4 @@ jobs:
           value: ${{ needs.release-version.outputs.version }}
           push: false
           pull_request: true
-          message: Nasazeni aplikace verze ${{ needs.release-version.outputs.version }} do TEST prostredi
+          #message: Nasazeni aplikace verze ${{ needs.release-version.outputs.version }} do TEST prostredi
